@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#f89520</color>
+    <color name="colorPrimaryDark">#f89520</color>
+    <color name="colorAccent">#f89520</color>
+    <color name="very_light_gray_opacity_fiftyFive">#8CE4E4F2</color>
+    <color name="white">#4dFFFFFF</color>
+    <color name="white2">#80FFFFFF</color>
+    <color name="white3">#FFFFFF</color>
+    <color name="from">#FFA000</color>
+    <color name="to">#FDD835</color>
+    <color name="splash">#f89520</color>
+    <color name="splashfade">#CCf89520</color>
+</resources>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.appslab.oracle.atthackthon.DetailActivity"
+    tools:showIn="@layout/activity_detail">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pants"
+            android:textSize="25sp"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="438dp"
+            android:layout_marginTop="15dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:src="@drawable/ic_company" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Delivery Company"
+                android:id="@+id/textView"
+                android:layout_alignBottom="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="FedEx"
+                android:id="@+id/delivery_company"
+                android:layout_below="@+id/imageView"
+                android:layout_toEndOf="@+id/imageView" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView2"
+                android:src="@drawable/ic_phone1"
+                android:layout_alignTop="@+id/textView"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="33dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView3"
+                android:src="@drawable/ic_track"
+                android:layout_below="@+id/delivery_company"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Tracking ID"
+                android:id="@+id/textView3"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/imageView3"
+                android:layout_toEndOf="@+id/imageView3" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="IF5456642564HK"
+                android:id="@+id/tracking_number"
+                android:layout_below="@+id/textView3"
+                android:layout_toEndOf="@+id/imageView3" />
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tracking_number"
+                android:layout_alignEnd="@+id/imageView2"
+                android:layout_marginTop="10dp"
+                android:id="@+id/view" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView4"
+                android:src="@drawable/ic_plane"
+                android:layout_below="@+id/view"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Country"
+                android:id="@+id/textView5"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/imageView4"
+                android:layout_toEndOf="@+id/imageView4" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Hong Kong"
+                android:id="@+id/country"
+                android:layout_below="@+id/textView5"
+                android:layout_toEndOf="@+id/imageView4" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView5"
+                android:src="@drawable/ic_box"
+                android:layout_below="@+id/country"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Status"
+                android:id="@+id/textView7"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/imageView5"
+                android:layout_toEndOf="@+id/imageView5" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="On the way"
+                android:id="@+id/status"
+                android:layout_below="@+id/textView7"
+                android:layout_toEndOf="@+id/imageView5" />
+
+            <View
+                android:layout_marginTop="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@android:color/darker_gray"
+                android:layout_alignParentStart="true"
+                android:id="@+id/view2"
+                android:layout_below="@+id/status"
+                android:layout_alignEnd="@+id/view" />
+
+            <ImageView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView6"
+                android:src="@drawable/ic_calendar"
+                android:layout_below="@+id/view2"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Arrival date"
+                android:id="@+id/textView9"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/imageView6"
+                android:layout_toEndOf="@+id/imageView6" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="17/01/16"
+                android:id="@+id/arrival_date"
+                android:layout_below="@+id/textView9"
+                android:layout_toEndOf="@+id/imageView6" />
+
+            <ImageView
+                android:layout_marginTop="15dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView7"
+                android:src="@drawable/ic_clok"
+                android:layout_below="@+id/arrival_date"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Arrival time"
+                android:id="@+id/textView11"
+                android:textStyle="bold"
+                android:layout_alignBottom="@+id/imageView7"
+                android:layout_toEndOf="@+id/imageView7" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="17/01/16"
+                android:id="@+id/arrival_time"
+                android:layout_below="@+id/imageView7"
+                android:layout_alignEnd="@+id/textView5" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+
+
+
+</android.support.v4.widget.NestedScrollView>
