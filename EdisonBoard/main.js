@@ -108,6 +108,40 @@ function startServo(timeOffset, timeInterval)
 
 }
 
+
+// use M2X for MQTT notifications
+/*
+http://api-m2x.att.com/v2/devices/85f8e594b5c0db75e287f78bc9de0ec6/streams/authorized_packages/value -H "X-M2X-KEY: 4ef649f7d38808357313171dddd83c3a" -H "tion/json" -d "{ \"value\": \"1\" }"
+
+API Key: 4ef649f7d38808357313171dddd83c3a
+Device ID: 85f8e594b5c0db75e287f78bc9de0ec6
+Stream name: authorized_packages
+*/
+
+var M2X = require("m2x");
+var m2x = new M2X("4ef649f7d38808357313171dddd83c3a");
+
+var key         = "4ef649f7d38808357313171dddd83c3a"
+var device_id   = "85f8e594b5c0db75e287f78bc9de0ec6"
+var stream_name = "authorized_packages"
+var broker_url  = "mqtt://4ef649f7d38808357313171dddd83c3a:@api-m2x.att.com"
+var user_agent  = "M2X-Demo-Client/0.0.1"
+
+var mqttrequest = {
+    id: SecureRandom.hex,
+    method: "POST",
+    resource: "/v2/devices/85f8e594b5c0db75e287f78bc9de0ec6/streams/authorized_packages/values",
+    agent: user_agent
+  }
+var device = m2x.device(device_id);
+
+function postToM2x(val) 
+{
+    var pvalues = {"value": val};
+    var res = device.post_updates(values: pvalues);    
+}
+
+// Test using CloudMQTT
 var mqtt    = require('mqtt');
 var options = {
   port: 18149,
@@ -173,6 +207,7 @@ function turnSafeServo(degrees)
             mqttclient.publish('safelock', 'open');
             console.log("mqtt publish open to safelock");
             hasPublished = true;
+            postToM2x("1");
         }
     }
     else 
@@ -184,6 +219,7 @@ function turnSafeServo(degrees)
         mqttclient.publish('safelock', 'close');
         console.log("mqtt publish close to safelock");
         hasPublished = false;
+        postToM2x("0");
     }
 }
 
