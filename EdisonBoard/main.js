@@ -20,6 +20,24 @@ var groveRotary = new upm_grove.GroveRotary(0);
 var led7 = new mraa.Gpio(7); 
 led7.dir(mraa.DIR_OUT);
 
+var buzzer3 = new mraa.Pwm(3);
+
+//set the period in microseconds.
+// buzzer3.period_us(2000);
+var isOpenned = false;
+buzzer3.enable(false);
+
+function buzz() {
+
+    buzzer3.write(0.03);
+    console.log("buzz sounded");
+    
+    if( isOpenned ) {
+        setTimeout(buzz, 2000);
+    }
+}
+
+
 var isRecording = false;
 
 //GROVE Kit A0 Connector --> Aio(0)
@@ -37,7 +55,7 @@ function startLightSensorWatch() {
         console.log("Light: " + a);
         
         // the box is open, record video now
-        if( a > 200 && isRecording == false) {
+        if( a > 200 && isRecording == false && isOpenned == true ) {
             recordVideo();   
         }
 
@@ -109,9 +127,11 @@ var mqttclient = mqtt.connect(options);
 mqttclient.on('connect', function() { // When connected
   console.log("mqtt client connected");
   // subscribe to a topic
+  /*
   mqttclient.subscribe('safelock', function() {
     console.log("mqtt subscribed");      
   });
+  */
 });
 
 
@@ -122,6 +142,7 @@ mqttclient.on('error', function(err){
 
 mqttclient.on('message', function(topic, message, packet) {
         console.log("Received '" + message + "' on '" + topic + "'");
+        /*
         if( message == 'open' ) {
             turnSafeServo(180);
             console.log( "open safe" );
@@ -130,9 +151,10 @@ mqttclient.on('message', function(topic, message, packet) {
             turnSafeServo(20);
             console.log( "close safe" );
         }
+        */
 });
 
-
+var hasPublished = false;
 function turnSafeServo(degrees)
 {
     servo.setAngle(Math.round(degrees * servoRange/knobRange));        
@@ -141,13 +163,28 @@ function turnSafeServo(degrees)
     // degree 180 - open;  degree 20 - close
     if( degrees > 70 ) 
     {
-        led7.write(1);                
+        led7.write(1);
+        isOpenned = true;
+        buzzer3.enable(true);
+        
+        buzz();
+        
+        if( hasPublished == false ) {
+            mqttclient.publish('safelock', 'open');
+            console.log("mqtt publish open to safelock");
+            hasPublished = true;
+        }
     }
     else 
     {
         led7.write(0);
+        isOpenned = false;   
+        buzzer3.enable(false);
+
+        mqttclient.publish('safelock', 'close');
+        console.log("mqtt publish close to safelock");
+        hasPublished = false;
     }
-    
 }
 
 function recordVideo() 
