@@ -15,8 +15,8 @@
         "name": "EdisonServo.xdk"
       },
       "EdisonServo.xdke": {
-        "previousModTime": 1451796091000,
-        "modified": 1451796091000,
+        "previousModTime": 1451805774000,
+        "modified": 1451805774000,
         "seen": true,
         "name": "EdisonServo.xdke"
       },
@@ -39,14 +39,14 @@
         "name": "icon.png"
       },
       "main.js": {
-        "previousModTime": 1451796881000,
-        "modified": 1451796881000,
+        "previousModTime": 1451806438000,
+        "modified": 1451806438000,
         "seen": true,
         "name": "main.js"
       },
       "package.json": {
-        "previousModTime": 1451791756000,
-        "modified": 1451791756000,
+        "previousModTime": 1451806484000,
+        "modified": 1451806484000,
         "seen": true,
         "name": "package.json"
       },
@@ -58,8 +58,23 @@
       }
     },
     "boardFileStatus": {
+      "LICENSE.md": {
+        "previousModTime": 1451806597731
+      },
+      "README.md": {
+        "previousModTime": 1451806597731
+      },
+      "icon.png": {
+        "previousModTime": 1451806597731
+      },
       "main.js": {
-        "previousModTime": 1451796887278
+        "previousModTime": 1451806597731
+      },
+      "package.json": {
+        "previousModTime": 1451806597731
+      },
+      "xdk/project-info.json": {
+        "previousModTime": 1451806597731
       }
     }
   }

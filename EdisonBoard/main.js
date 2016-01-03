@@ -2,6 +2,11 @@
 /*jshint unused:true */
 // Leave the above lines for propper jshinting
 //Type Node.js Here :)
+
+var childProcess = require('child_process');
+var express = require('express');
+var http = require('http');
+
 var mraa = require('mraa'); //require mraa
 console.log('MRAA Version: ' + mraa.getVersion()); //write the mraa version to the Intel XDK console
 
@@ -15,6 +20,25 @@ var groveRotary = new upm_grove.GroveRotary(0);
 var led7 = new mraa.Gpio(7); 
 led7.dir(mraa.DIR_OUT);
 
+var buzzer3 = new mraa.Pwm(3);
+
+//set the period in microseconds.
+// buzzer3.period_us(2000);
+var isOpenned = false;
+buzzer3.enable(false);
+
+function buzz() {
+
+    buzzer3.write(0.03);
+    console.log("buzz sounded");
+    
+    if( isOpenned ) {
+        setTimeout(buzz, 2000);
+    }
+}
+
+
+var isRecording = false;
 
 //GROVE Kit A0 Connector --> Aio(0)
 var lightA0 = new mraa.Aio(1);
@@ -30,13 +54,18 @@ function startLightSensorWatch() {
         var a = lightA0.read();
         console.log("Light: " + a);
         
-        var resistance = (1023 - a) * 10000 / a; //get the resistance of the sensor;
+        // the box is open, record video now
+        if( a > 200 && isRecording == false && isOpenned == true ) {
+            recordVideo();   
+        }
+
+        // var resistance = (1023 - a) * 10000 / a; //get the resistance of the sensor;
         // console.log("resistence: " + resistance);
         
         // socket.emit("message", "opened");
         // socket.emit("message", "closed");
         
-    }, 3000);
+    }, 2000);
 }
 
 
@@ -98,9 +127,11 @@ var mqttclient = mqtt.connect(options);
 mqttclient.on('connect', function() { // When connected
   console.log("mqtt client connected");
   // subscribe to a topic
+  /*
   mqttclient.subscribe('safelock', function() {
     console.log("mqtt subscribed");      
   });
+  */
 });
 
 
@@ -111,6 +142,7 @@ mqttclient.on('error', function(err){
 
 mqttclient.on('message', function(topic, message, packet) {
         console.log("Received '" + message + "' on '" + topic + "'");
+        /*
         if( message == 'open' ) {
             turnSafeServo(180);
             console.log( "open safe" );
@@ -119,9 +151,10 @@ mqttclient.on('message', function(topic, message, packet) {
             turnSafeServo(20);
             console.log( "close safe" );
         }
+        */
 });
 
-
+var hasPublished = false;
 function turnSafeServo(degrees)
 {
     servo.setAngle(Math.round(degrees * servoRange/knobRange));        
@@ -130,13 +163,45 @@ function turnSafeServo(degrees)
     // degree 180 - open;  degree 20 - close
     if( degrees > 70 ) 
     {
-        led7.write(1);                
+        led7.write(1);
+        isOpenned = true;
+        buzzer3.enable(true);
+        
+        buzz();
+        
+        if( hasPublished == false ) {
+            mqttclient.publish('safelock', 'open');
+            console.log("mqtt publish open to safelock");
+            hasPublished = true;
+        }
     }
     else 
     {
         led7.write(0);
+        isOpenned = false;   
+        buzzer3.enable(false);
+
+        mqttclient.publish('safelock', 'close');
+        console.log("mqtt publish close to safelock");
+        hasPublished = false;
     }
+}
+
+function recordVideo() 
+{
+    console.log("recording video");
+    isRecording = true;
     
+    childProcess.exec('/home/root/edi-cam/bin/record.sh', function (error, stdout, stderr) {
+        if (error) {
+            console.log(error.stack);
+            console.log('error code: '+error.code);
+            console.log('error signal: '+error.signal);
+        }
+        console.log('STDOUT: '+stdout);
+    });
+    
+    setTimeout( function(){isRecording=false}, 20000);
 }
 
 // start immediately, run every 5000  miliseconds.
@@ -145,15 +210,39 @@ function turnSafeServo(degrees)
 startLightSensorWatch();
 
 
-//Create Socket.io server
-var http = require('http');
-var app = http.createServer(function (req, res) {
-    'use strict';
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('<h1>Hello world from Intel IoT platform!</h1>');
-}).listen(1337);
+// app parameters                                                               
+var app = express();                                                            
+app.set('port', 8086);
 
-var io = require('socket.io')(app);
+/*
+var httpServer = http.createServer(function (req, res) {
+    'use strict';
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('<h1>Hello world from Intel IoT platform!</h1>');
+}).listen(app.get('port'));
+*/
+
+var httpServer = http.createServer(app).listen(app.get('port'), function () {
+  console.log('HTTP server listening on port ' + app.get('port'));
+});
+
+// To open safedrop by direct call
+app.get("/lock", function (req, res) {
+    console.log("http lock call");
+    turnSafeServo(20);
+    console.log( "close safe" );
+    res.end('locked');
+});
+        
+app.get("/unlock", function (req, res) {
+    console.log("http unlock call");
+    turnSafeServo(180);
+    console.log( "open safe" );
+    res.end('unlocked');
+});
+        
+//Create Socket.io server        
+var io = require('socket.io')(httpServer);
 
 //Attach a 'connection' event handler to the server
 io.on('connection', function (socket) {
@@ -162,7 +251,6 @@ io.on('connection', function (socket) {
     //Emits an event along with a message
     socket.emit('connected', 'Welcome');
 
-    //Start watching Sensors connected to Galileo board
     // startLightSensorWatch(socket);
 
     //Attach a 'disconnect' event handler to the socket
