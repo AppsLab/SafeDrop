@@ -66,11 +66,11 @@ textarea {
 button {
     background-color: rgb(224,224,224);
     width: 100%;
-    height: 250px;
+    height: 280px;
     border: rgb(153, 153, 153) 1px solid;
     -webkit-border-radius: 5px;
     border-radius: 5px;
-    margin: 5px;
+    margin: 0px;
     padding: 17px;
     font: normal 16px/120% "Intel Clear W", Arial, sans-serif;
     color: rgb(84, 84, 84);
