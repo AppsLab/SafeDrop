@@ -5,7 +5,7 @@
       "projectTypeName": "com.intel.xdk.projecttype.jsapp",
       "src": "jsapp/sample-barcode-scanner/sample.zip",
       "projectGuid": "1d5afde0-04d7-4f89-a414-021b365e17d0",
-      "lastModifiedDate": 1451692018484,
+      "lastModifiedDate": 1451806462574,
       "creationDate": 1451533218898
     },
     "XDK-app-designer": "false",
@@ -50,7 +50,8 @@
         "gitref": "",
         "name": "Device",
         "description": "Cordova Device Plugin",
-        "checksum": "adfc61ba"
+        "checksum": "adfc61ba",
+        "cordovaVersion": ">=3.0.0"
       },
       {
         "id": "cordova-plugin-splashscreen",
@@ -67,7 +68,8 @@
         "gitref": "",
         "name": "Splashscreen",
         "description": "Cordova Splashscreen Plugin",
-        "checksum": "170efb68"
+        "checksum": "170efb68",
+        "cordovaVersion": ">=3.0.0"
       },
       {
         "id": "phonegap-plugin-barcodescanner",
@@ -91,6 +93,74 @@
         "cordovaVersion": ">=3.0.0",
         "dependedBy": [],
         "checksum": "d3e76f77"
+      },
+      {
+        "id": "com.arcoirislabs.plugin.mqtt",
+        "name": "CordovaMqTTPlugin",
+        "version": "0.0.1",
+        "originType": "repo",
+        "origin": "https://github.com/arcoirislabs/mqtt-cordova.git",
+        "gitref": "",
+        "subdir": ".",
+        "paramvals": {},
+        "sourceLocation": "plugins/com.arcoirislabs.plugin.mqtt",
+        "selectedState": "Included",
+        "checksum": "9f72ddd3",
+        "dependsOn": [],
+        "topLevel": true,
+        "permissions": {},
+        "description": "The new MqTT plugin for Cordova",
+        "data": {},
+        "dependedBy": [],
+        "custom": "true"
+      },
+      {
+        "id": "com.synconset.cordovaHTTP",
+        "name": "SSL Pinning",
+        "version": "0.1.4",
+        "originType": "repo",
+        "origin": "https://github.com/wymsee/cordova-HTTP.git",
+        "gitref": "",
+        "subdir": ".",
+        "paramvals": {},
+        "sourceLocation": "plugins/com.synconset.cordovaHTTP",
+        "selectedState": "Included",
+        "checksum": "a2246712",
+        "dependsOn": [
+          "org.apache.cordova.file"
+        ],
+        "topLevel": true,
+        "cordovaVersion": ">=3.0.0",
+        "permissions": {},
+        "description": "\n        Cordova / Phonegap plugin for communicating with HTTP servers using SSL pinning\n\t",
+        "data": {},
+        "dependedBy": [],
+        "custom": "true"
+      },
+      {
+        "id": "org.apache.cordova.file",
+        "name": "File",
+        "version": "1.3.3",
+        "originType": "cordova.io",
+        "origin": "org.apache.cordova.file",
+        "gitref": "",
+        "paramvals": {},
+        "sourceLocation": "plugins/org.apache.cordova.file",
+        "selectedState": "Included",
+        "checksum": "542f0a36",
+        "dependsOn": [],
+        "topLevel": false,
+        "cordovaVersion": ">=3.0.0",
+        "permissions": {
+          "android:name": [
+            "android.permission.WRITE_EXTERNAL_STORAGE"
+          ]
+        },
+        "description": "Cordova File Plugin",
+        "data": {},
+        "dependedBy": [
+          "com.synconset.cordovaHTTP"
+        ]
       }
     ],
     "buildConfigurations": {

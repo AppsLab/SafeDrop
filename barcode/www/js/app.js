@@ -16,6 +16,11 @@
 // This file contains your event handlers, the center of your application.
 // NOTE: see app.initEvents() in init-app.js for event handler initialization code.
 
+var xhttp;
+if (window.XMLHttpRequest) {
+    xhttp = new XMLHttpRequest();
+}
+
 function myEventHandler() {
     "use strict";
 
@@ -51,24 +56,24 @@ function scan() {
         } else {
             cordova.plugins.barcodeScanner.scan(
                 function (result) {
-                    xhttp.onreadystatechange = function() {
-                        if (xhttp.readyState == 4 && xhttp.status == 200) {
-//                          document.getElementById("demo").innerHTML = xhttp.responseText;
-                            if (xhttp.responseText == 'valid') {
-                                green();
-                                setTimeout(grey, 10000);
-                            } else {
-                                red();
-                                setTimeout(grey, 10000);
-                            }
+                    var url = "https://apex.oracle.com/pls/apex/m2m.safedropapi.verify?tracker_number=1";
+                    cordovaHTTP.get(url, {}, {}, function(response) {
+                        response.data = JSON.parse(response.data);
+                        console.log(response.data, " and ", response.status);
+                        if (response.data.status == 'success') {
+                            green();
+                            setTimeout(grey, 10000);
                         } else {
                             red();
                             setTimeout(grey, 10000);
                         }
-                    };
-                    var url = "http://.../valid?tracking_number=" + result.text; 
-                    xhttp.open("GET", url, true);
-                    xhttp.send();
+                    }, function(response) {
+                        console.error(response);
+                        red();
+                        setTimeout(grey, 10000);
+                    });
+                    
+                    
                     
 //                        console.log(fName, "Scanned result found!");
 //                        alert("We got a barcode!\n" +
@@ -94,7 +99,7 @@ function green() {
     button.style.color = 'rgb(238,238,238)';
     button.innerHTML = "Open!";
     
-    
+    httpOpen();
 }
 
 function grey() {
@@ -102,12 +107,67 @@ function grey() {
     button.style.backgroundColor = 'rgb(224,224,224)';
     button.style.color = 'rgb(84,84,84)';
     button.innerHTML = "Scan";
+    
+    httpClose();
 }
 
 function red() {
     var button = document.getElementById( 'id_btnScan' );
     button.style.backgroundColor = 'red';
     button.style.color = 'rgb(238,238,238)';
-    button.style.button.innerHTML = "Error!";
+    button.innerHTML = "Error!";
 }
 
+function httpOpen() {
+    cordovaHTTP.get("http://192.168.1.185:8086/unlock", {}, {}, function(response) {
+        console.log(response.status);
+    }, function(response) {
+        console.error(response.error);
+    });
+}
+
+function httpClose() {
+    cordovaHTTP.get("http://192.168.1.185:8086/lock", {}, {}, function(response) {
+        console.log(response.status);
+    }, function(response) {
+        console.error(response.error);
+    });
+}
+
+//function mqttConnect() {
+//    console.log("mqtt", "calling");
+//    cordova.plugins.CordovaMqTTPlugin.connect({
+//          port:18149,
+//          url:"m11.cloudmqtt.com",
+//          success:function(s){
+//              console.log("mqtt", "connected");
+//          },
+//          error:function(e){
+//              console.log("mqtt", "error");
+//          }
+//    })
+//}
+//
+//function mqttPublish() {
+//    cordova.plugins.CordovaMqTTPlugin.publish({
+//    url:"m11.cloudmqtt.com",
+//    topic:"safelock",
+//    secure:false,
+//    qos:"2",
+//    clientId:"scannerapp",
+//    portNo:"18149",
+//    message:"open",
+//    cleanSession:true,
+//    username:"kqcagdjr",
+//    password:"hKwYtJYpCzLt",
+//    debug:false,
+//    success:function(data){
+//        alert(data);
+//        console.log("mqtt published");
+//    },
+//    error:function(data){
+//         alert(data);
+//        console.log("mqtt not published");
+//    }
+//});
+//}
