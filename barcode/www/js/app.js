@@ -16,10 +16,6 @@
 // This file contains your event handlers, the center of your application.
 // NOTE: see app.initEvents() in init-app.js for event handler initialization code.
 
-var xhttp;
-if (window.XMLHttpRequest) {
-    xhttp = new XMLHttpRequest();
-}
 
 function myEventHandler() {
     "use strict";
@@ -56,10 +52,12 @@ function scan() {
         } else {
             cordova.plugins.barcodeScanner.scan(
                 function (result) {
-                    var url = "https://apex.oracle.com/pls/apex/m2m.safedropapi.verify?tracker_number=1";
+                    var code = result.text;
+                    var url = "https://apex.oracle.com/pls/apex/m2m.safedropapi.verify?tracker_number=" + code;
+                    console.log(code, " and ", url);
                     cordovaHTTP.get(url, {}, {}, function(response) {
                         response.data = JSON.parse(response.data);
-                        console.log(response.data, " and ", response.status);
+                        console.log(response.data.stringify(), " and ", response.status);
                         if (response.data.status == 'success') {
                             green();
                             setTimeout(grey, 10000);
@@ -98,7 +96,6 @@ function green() {
     button.style.backgroundColor = 'green';
     button.style.color = 'rgb(238,238,238)';
     button.innerHTML = "Open!";
-    
     httpOpen();
 }
 
@@ -107,7 +104,6 @@ function grey() {
     button.style.backgroundColor = 'rgb(224,224,224)';
     button.style.color = 'rgb(84,84,84)';
     button.innerHTML = "Scan";
-    
     httpClose();
 }
 
