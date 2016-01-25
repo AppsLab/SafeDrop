@@ -26,14 +26,6 @@ import com.appslab.oracle.atthackthon.model.adapter.ItemAdapter;
 import com.appslab.oracle.atthackthon.model.response.ItemResponse;
 import com.appslab.oracle.atthackthon.recycler.RecyclerItemClickListener;
 
-import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
-import org.eclipse.paho.client.mqttv3.MqttCallback;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         }));
 
         new GetItem().execute();
-        setupClient();
+        //setupClient();
         testNotification();
     }
 
@@ -205,68 +197,6 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(1, mBuilder.build());
 
-    }
-
-    private void setupClient() {
-        String topic        = "safelock";
-        String content      = "Message from MqttPublishSample";
-        int qos             = 2;
-        String broker       = "tcp://m11.cloudmqtt.com:18149";
-        String clientId     = "testclient";
-        MemoryPersistence persistence = new MemoryPersistence();
-        MqttClient sampleClient;
-
-        try {
-            sampleClient = new MqttClient(broker, clientId, persistence);
-            sampleClient.setCallback(new MqttCallback() {
-                public void messageArrived(String topic, MqttMessage msg)
-                        throws Exception {
-                    String payload = new String(msg.getPayload());
-
-                    if (payload.equalsIgnoreCase("open")) {
-                        open = true;
-                    } else if (payload.equalsIgnoreCase("close") && open){
-                        // Good package
-                        testNotification();
-                        for (int i = 0; i < mDataset.size(); i++) {
-                            if (mDataset.get(i).getStatus().equalsIgnoreCase("Waiting")) {
-                                mDataset.get(i).setStatus("delivered");
-                                mAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    }
-                    System.out.println("Recived:" + topic);
-                    System.out.println("Recived:" + new String(msg.getPayload()));
-                }
-
-                public void deliveryComplete(IMqttDeliveryToken arg0) {
-                    System.out.println("Delivary complete");
-                }
-
-                public void connectionLost(Throwable arg0) {
-                    // TODO Auto-generated method stub
-                }
-            });
-
-
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            connOpts.setUserName("kqcagdjr");
-            //hKwYtJYpCzLt
-            connOpts.setPassword(new char[]{'h', 'K', 'w', 'Y', 't', 'J', 'Y', 'p', 'C', 'z', 'L', 't'});
-            sampleClient.connect(connOpts);
-
-//            MqttMessage message = new MqttMessage(content.getBytes());
-//            message.setQos(qos);
-//            System.out.println("Publish message: " + message);
-
-            sampleClient.subscribe(topic, qos);
-            //sampleClient.publish(topic, message);
-            //sampleClient.disconnect();
-            //System.exit(0);
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
     }
 
     private void changeItem() {

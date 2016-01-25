@@ -74,7 +74,9 @@ public class LoginActivity extends AppCompatActivity implements SdStateChangeLis
 
     @OnClick(R.id.login_button)
     public void attemptLogin() {
-        new UserLogin().execute();
+        //new UserLogin().execute();
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
     }
 
     private void setupViews() {

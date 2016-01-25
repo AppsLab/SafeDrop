@@ -28,5 +28,4 @@ dependencies {
     compile project(':net')
     androidTestCompile 'junit:junit:4.12'
     compile files('libs/smisdk-android.jar')
-    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.0.2'
 }
